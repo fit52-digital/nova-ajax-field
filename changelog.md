@@ -6,6 +6,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## 1.3.1 - 2024-11-14
+
+- Fixed the #0f0 green
+- Correctly fire the parent field observer
+
+## 1.3.0 - 2024-11-14
+
+- Fixed selected parent option not being passed correctly to the ajax endpoint
+- Added Custom stylesheet to help dark mode conflicts
+
+## 1.2.3 - 2024-11-06
+
+- Updated dist bundle
+
+## 1.2.2 - 2024-11-06
+
+- Fix to vue-select 3.x returning an instance of the event on change, rather than the updated value
+- `root` declaration on eslint config to fix deprecation warnings
+
+## 1.2.1 - 2024-11-05
+
+- Remove Nova secrets from being required in the CI runner action during Composer setup
+
+## 1.2.0 - 2024-11-05
+
+- Fixed javascript error when inside a flexible componet
+- Any Ajax Request results are now stored in a cached variable so label isn't lost on search 
+- Use Nova Placeholder before name on search input
+
 ## 1.0.1 - 2022-05-11
 
 - Added filterable option flag, contributed by https://github.com/nea
