@@ -12,6 +12,8 @@
     "lint": "eslint --ext .js,.vue resources"
   },
   "devDependencies": {
+    "@babel/code-frame": "^7.27.1",
+    "@babel/highlight": "^7.25.9",
     "cross-env": "^5.0.0",
     "eslint": "^7.3.1",
     "eslint-plugin-vue": "^7.0.0-alpha.8",
@@ -23,5 +25,6 @@
     "lodash": "^4.17.21",
     "vue": "^3.0",
     "vue-select": "^4.0.0-beta.5"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
 }
