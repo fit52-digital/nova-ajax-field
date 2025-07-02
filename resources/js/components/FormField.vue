@@ -25,6 +25,7 @@ import VueSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
 import _ from "lodash";
 import { isArray } from "util";
+import get from 'lodash/get';
 
 export default {
 	components: {
@@ -49,7 +50,13 @@ export default {
 
 	computed: {
 		availableOptions() {
-			return _.uniqBy(this.options.concat(this.selectedOptions), "value");
+      let options = [];
+
+      if (Array.isArray(this.options) && this.options.length > 0) {
+        options = this.options;
+      }
+
+			return _.uniq(options.concat(this.selectedOptions));
 		},
 	},
 
@@ -141,6 +148,26 @@ export default {
 			this.value = value;
 		},
 
+    /**
+     * Converts array of entries to objects with value / label props
+     */
+    convertApiResponse(options) {
+        if (this.field.resultsKey) {
+            options = options[this.field.resultsKey];
+        }
+
+        if (!Array.isArray(options) || options.length < 1) {
+            return [];
+        }
+
+        return options.map( entry => {
+            return {
+                value: get(entry, this.field.valueKey, 'value'),
+                label: get(entry, this.field.labelKey, 'label'),
+            }
+        });
+    },
+
 		/*
 		 * Load initial Options
 		 */
@@ -155,11 +182,11 @@ export default {
 			window.Nova.request()
 				.get(url)
 				.then(({ data }) => {
-					this.options = data;
-					this.cacheOptions(data);
+					this.options = this.convertApiResponse(data);
+					this.cacheOptions(this.options);
 
 					this.options.forEach((option) => {
-						if (isArray(this.value)) {
+						if (Array.isArray(this.value)) {
 							this.value.forEach((v) => {
 								if (v == option.value) {
 									this.selectedOptions.push(option);
@@ -189,6 +216,7 @@ export default {
 			window.Nova.request()
 				.get(url)
 				.then(({ data }) => {
+          data = vm.convertApiResponse(data);
 					vm.options = data;
 					vm.cacheOptions(data);
 					loading(false);
@@ -218,9 +246,7 @@ export default {
 		},
 
 		reduceOption(option) {
-			const valueKey = this.field.valueKey || "value";
-
-			return option ? option[valueKey] : null;
+			return option ? option['value'] : null;
 		},
 
 		buildParamString(searchVal, fieldVal) {
@@ -279,7 +305,7 @@ export default {
 		inputSelected() {
 			const value = this.value;
 
-			if (!value) {
+			if (!value || !Array.isArray(this.options)) {
 				return;
 			}
 
